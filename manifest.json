@@ -2,12 +2,24 @@
   "manifest_version": 3,
   "name": "Fortnite At Freddy's",
   "version": "1.0",
-  "description": "Welcome to Fortnite at Freddy's with Freddy Fazbear from Five Nights at Freddy Fazbear Pizza Entertainment ! (No joke, just replace five nights by fortnite 'cause I find this very funny)",
+  "description": "Welcome to Fortnite at Freddy's with Freddy Fazbear from Fortnite at Freddy Fazbear Pizza Entertainment ! (No joke, just replace Fortnite by fortnite 'cause I find this very funny)",
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
       "js": ["FortniteAtFreddys.js"]
     }
-  ]
+  ],
+  "icons": {
+    "16": "img/freddy16.png",
+    "48": "img/freddy48.png",
+    "128": "img/freddy128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "img/freddy16.png",
+      "48": "img/freddy48.png",
+      "128": "img/freddy128.png"
+    }
+  }
 
 }
