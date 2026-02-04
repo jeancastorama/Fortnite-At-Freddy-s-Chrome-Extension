@@ -1,24 +1,61 @@
-const motRechercher = "five nights";
 const motRemplacer = "Fortnite";
+const regex = /\bfive\s+nights\b/gi;
 
-const regex = new RegExp(motRechercher, "gi");
+function processTextNode(node) {
+  if (!node || node.nodeType !== Node.TEXT_NODE) return;
 
-function convertToFortnite(element)
-{
-    if (element.hasChildNodes())
-    {
-        Array.from(element.childNodes).forEach(convertToFortnite);
-    }
+  const txt = node.textContent;
+  if (!txt) return;
 
-    else if (element.nodeType == 3)
-    {
-        if (element.textContent.match(regex))
-        {
-            element.textContent = element.textContent.replace(regex, motRemplacer);
-        }
-    }
+  if (txt.match(regex)) {
+    node.textContent = txt.replace(regex, motRemplacer);
+  }
 }
 
-convertToFortnite(document.body);
-convertToFortnite(document.head);
+function walkAndReplace(root) {
+  if (!root) return;
 
+  if (root.nodeType === Node.TEXT_NODE) {
+    processTextNode(root);
+    return;
+  }
+
+  const walker = document.createTreeWalker(
+    root,
+    NodeFilter.SHOW_TEXT,
+    null,
+    false
+  );
+
+  let current;
+  while ((current = walker.nextNode())) {
+    processTextNode(current);
+  }
+}
+
+function runReplacement() {
+  walkAndReplace(document.body);
+  walkAndReplace(document.head);
+}
+
+runReplacement();
+
+const observer = new MutationObserver((mutations) => {
+  for (const m of mutations) {
+    if (m.type === "characterData") {
+      processTextNode(m.target);
+    }
+
+    if (m.type === "childList") {
+      m.addedNodes.forEach((n) => {
+        walkAndReplace(n);
+      });
+    }
+  }
+});
+
+observer.observe(document.documentElement, {
+  subtree: true,
+  childList: true,
+  characterData: true
+});
