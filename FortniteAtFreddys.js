@@ -1,5 +1,5 @@
 const motRemplacer = "Fortnite";
-const regex = /\bfive\s+nights\b/gi;
+const regex = /\bfive\s+night(?:'s)?s?\b/gi;
 
 function processTextNode(node) {
   if (!node || node.nodeType !== Node.TEXT_NODE) return;
@@ -59,3 +59,4 @@ observer.observe(document.documentElement, {
   childList: true,
   characterData: true
 });
+
